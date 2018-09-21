@@ -1,8 +1,6 @@
 package com.zzcandor.utilandroid.ui.activity;
 
-/**
- * Created by Jay on 2015/9/24 0024.
- */
+
 public class Icon {
     private int iId;
     private String iName;

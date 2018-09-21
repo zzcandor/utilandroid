@@ -121,6 +121,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     }
 
+                    5 -> {
+                        Intent(this@MainActivity, MarqueeActivity::class.java).run {
+                            startActivity(this)
+                        }
+
+                    }
+
                 }
 
 
