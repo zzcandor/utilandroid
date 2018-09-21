@@ -9,13 +9,19 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import com.zzcandor.utilandroid.R
 import com.zzcandor.utilandroid.adapter.GridAdapter
+import com.zzcandor.utilandroid.api.RequestClient
 import com.zzcandor.utilandroid.util.Shares
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -37,7 +43,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        request()
+
         fab.setOnClickListener { view ->
+            request()
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
@@ -79,6 +88,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
+
         grid_photo!!.adapter = mAdapter
 
         grid_photo!!.onItemClickListener = object : AdapterView.OnItemClickListener {
@@ -116,6 +126,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
 
 
+                    3 -> {
+
+                        Intent(this@MainActivity, VideoActivity::class.java).run {
+                            startActivity(this)
+                        }
+                    }
+
+
                     4 -> {
                         Shares.share(this@MainActivity,"百度")
 
@@ -136,6 +154,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
+    }
+    private fun request(){
+        RequestClient
+                .getApiService()
+                .getProjectTree()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object :Observer<Any>{
+                    override fun onComplete() {
+
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+                    }
+
+                    override fun onNext(t: Any) {
+//                        Log.d("",t.toString())
+                        System.out.println("OKKK")
+                        System.out.println(t)
+
+                    }
+
+                    override fun onError(e: Throwable) {
+
+
+                    }
+
+
+                })
     }
 
     override fun onBackPressed() {
